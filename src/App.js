@@ -1,160 +1,63 @@
 
+import { useState } from 'react';
 import './App.css';
-// import Apisonu from './Apisonu';
-// import Name from './props';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Sidebar from './Sidebar';
-import UseEffect from './UseEffect';
-import Input from './Input';
-import Props from './props';
-import Maps from './Maps';
-import Filter from './Filter';
-import HomeE from './HomeE';
-import AboutE from './AboutE';
-import Apisonu from './Apisonu';
-import Prices from './Prices';
-import GalleryE from './GalleryE';
-import BlogE from './BlogE';
-import Shop from './Shop';
-import ConntactE from './ConntactE';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Electricion from './Electricion';
-import Usememo from './Usememo';
-import UseRef from './UseRef';
-import Sonu from './ForwordRef';
-import { createContext, useRef, useState } from 'react';
-import ContextApi from './ContextApi';
-import Interview from './Interview';
-export let global = createContext()
+import { useEffect } from 'react';
 function App() {
-  let [color, setcolor] = useState("blue")
-  let input = useRef()
-  function updateref() {
-    input.current.value = "12121212122"
+
+  const [state, setData] = useState([])
+  const [filtervalue, setfilterval] = useState("")
+  const [searchapi, setsearchapi] = useState([])
+  useEffect(() => {
+    fetch("https://reqres.in/api/unknown").then((Sonu) => {
+      Sonu.json().then((resp) => {
+        setData(resp.data)
+        setsearchapi(resp.data)
+        // console.log(resp.data)
+      })
+    })
+  }, [])
+  console.log(filtervalue)
+  function handlefilter(e) {
+    console.log(e)
+    if (e == '') {
+      setData(searchapi )
+    }
+    else {
+      const filterdata = searchapi.filter((item) => item.name.toLowerCase().includes(e.toLowerCase()))
+      setData(filterdata)
+    }
+    setfilterval(e)
   }
+
   return (
-    <div className="App">
-
-      {/* <Sonu ref={input}></Sonu>
-      <button onClick={() => updateref()}>forword ref</button> */}
-
-
-
-
-
-
-
-      {/* <global.Provider value={{ color: color }}>
-        <ContextApi>
-
-        </ContextApi>
-      </global.Provider> */}
-
-
-
-
-      {/* <Interview></Interview> */}
-
-
-
-
-
-
-
-
-
-
-      {/* <Sonu ref={ref} ></Sonu>
-      <button onClick={() => handle()}>forword ref</button> */}
-      {/* <UseRef></UseRef> */}
-
-
-
-
-
-
-
-
-
-
-
-      {/* < Usememo></Usememo> */}
-
-
-
-
-
-      {/* <BrowserRouter>
-
-        <Electricion />
-
-        <Routes>
-          <Route path='/' element={<Sidebar />} />
-      
-          <Route path='/About' element={<AboutE />}></Route>
-          <Route path='/PricesE' element={<Prices />}></Route>
-          <Route path='/GalleryE' element={<GalleryE />}></Route>
-          <Route path='/BlogE' element={<BlogE />}></Route>
-          <Route path='/Shop' element={<Shop/>}></Route>
-          <Route path='/ContactE' element={<ConntactE/>}></Route>
-        </Routes>
-      </BrowserRouter> */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      {/* <Filter></Filter> */}
-      <Apisonu />
-      {/* <Input /> */}
-
-
-
-
-
-
-      {/* <UseEffect /> */}
-      {/* <Maps></Maps>  */}
-
-      {/* <Props name="sonu " mobile="6543234123" email="sonu@gmail.com" />
-      <Props name="monu" mobile="6549876543" email="monu@gmail.com" />
-      <Props name="suresh" mobile="987654323" email="suresh@gmail.com" /> */}
-
-
-
-
-
-      {/* <BrowserRouter>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/About">About</Link>
-        </li>
-        <li> 
-          <Link to="/Form">Form</Link>
-        </li>
-        <Routes>
-          <Route excat path='/' element={<Home />}></Route>
-          <Route excat path='/About' element={<About />}></Route>
-          <Route excat path='/Form' element={<Form />}></Route>
-        </Routes>
-      </BrowserRouter> */}
-      {/* <UseEffect /> */}
-    </div >
-
-  );
+    <> 
+      <input placeholder='search' onChange={(e) => handlefilter(e.target.value)} ></input>
+      <table border={1} bgcolor={"geen"}>
+        <tr>
+          <td bgcolor={"yellow"}>serial no.</td>
+          <td bgcolor={"yellow"}>name</td>
+          <td bgcolor={"yellow"}>year</td>
+          <td bgcolor={"yellow"}>color</td>
+          <td bgcolor={"yellow"}>values</td>
+        </tr>
+
+
+        {state?.map((item) =>
+            <tr>
+              <td>{item.id}</td>
+              <td>{item.name}</td>
+              <td>{item.year}</td>
+              <td>{item.color}</td>
+              <td>{item.pantone_value}</td>
+            </tr>
+
+
+          )
+        }
+
+
+      </table >
+    </>
+  )
 }
 export default App;
